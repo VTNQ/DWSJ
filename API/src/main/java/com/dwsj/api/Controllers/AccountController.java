@@ -78,6 +78,13 @@ public class AccountController {
 
     @GetMapping("/findByTransType/{value}")
     public ResponseEntity<Object> findByTransType(@PathVariable("value") int transType, HttpServletRequest httpServletRequest) {
-
+        try {
+            return new ResponseEntity<>(new Object(){
+                public boolean find = transactionService.findByTransType(transType, (Account) httpServletRequest.getSession().getAttribute("account"));
+            }, HttpStatus.OK);
+        }catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 }
