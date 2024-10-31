@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="JpaBuddyIdeaProjectConfig" newRepositoryParent="org.springframework.data.jpa.repository.JpaRepository">
+    <option name="reLastEntityCreationPackage" value="API/src/main/java/com/dwsj/api/Entities" />
+    <option name="reverseEngineeringLastDbConnectionId" value="806439f7-c8ca-4c34-b02f-ffe98c63750b" />
+  </component>
+  <component name="JpaPluginProjectSettings">
+    <option name="lastSelectedLanguage" value="Java" />
+  </component>
+</project>
