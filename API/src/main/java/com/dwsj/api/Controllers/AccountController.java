@@ -1,5 +1,8 @@
 package com.dwsj.api.Controllers;
 
+import com.dwsj.api.DTOs.AccountDto;
+import com.dwsj.api.DTOs.TransactionDetailDto;
+import com.dwsj.api.DTOs.TransactionList;
 import com.dwsj.api.Entities.Account;
 import com.dwsj.api.Entities.TransactionDetail;
 import com.dwsj.api.Services.AccountService;
@@ -7,6 +10,7 @@ import com.dwsj.api.Services.TransactionService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.support.Repositories;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.MimeTypeUtils;
@@ -23,20 +27,19 @@ public class AccountController {
     private TransactionService transactionService;
 
     @PostMapping(value = "/login",produces = MimeTypeUtils.APPLICATION_JSON_VALUE,consumes = MimeTypeUtils.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Object> login(@RequestBody Account account, HttpServletRequest httpServletRequest) {
+    public ResponseEntity<Account> login(@RequestBody AccountDto account) {
         try {
-            httpServletRequest.getSession().setAttribute("account", account);
-            return new ResponseEntity<>(new Object(){
-                public boolean result=accountService.login(account.getEmail(), account.getPassword());
-            }, HttpStatus.OK);
+
+            return new ResponseEntity<Account>(accountService.login(account.getEmail(),account.getPassword()), HttpStatus.OK);
         }catch (Exception e){
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
-    @PostMapping("/register")
-    public ResponseEntity<Object> register(@RequestBody Account account) {
+    @PostMapping(value = "register",consumes = MimeTypeUtils.APPLICATION_JSON_VALUE,
+            produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Object> register(@RequestBody AccountDto account) {
         try {
             account.setPassword(BCrypt.hashpw(account.getPassword(), BCrypt.gensalt()));
             return new ResponseEntity<>(new Object(){
@@ -47,17 +50,47 @@ public class AccountController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
-
+    @GetMapping("GetAllTransfer/{id}")
+    public ResponseEntity<List<TransactionList>>GetAllTransfer(@PathVariable("id")int id){
+        try {
+            return new ResponseEntity<List<TransactionList>>(transactionService.findAll(id), HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<List<TransactionList>>(HttpStatus.BAD_REQUEST);
+        }
+    }
+    @PutMapping(value = "UpdateProfile",consumes = MimeTypeUtils.APPLICATION_JSON_VALUE,
+            produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Object>Update(@RequestBody Account accountDto){
+        try {
+            return new ResponseEntity<Object>(new Object() {
+                public boolean result =accountService.UpdateProfile(accountDto);
+            }, HttpStatus.OK);
+        } catch (Exception e) {
+            // TODO: handle exception
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+    @GetMapping("filterTranfer/{id}")
+    public  ResponseEntity<List<TransactionList>>filterTranfer(@PathVariable("id")int id,@RequestParam int tranferType){
+        try {
+            return new ResponseEntity<List<TransactionList>>(transactionService.filterTranferType(id,tranferType), HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<List<TransactionList>>(HttpStatus.BAD_REQUEST);
+        }
+    }
     @PutMapping("/transaction/add")
-    public ResponseEntity<Object> addTransaction(@RequestBody TransactionDetail transactionDetail, HttpServletRequest httpServletRequest) {
+    public ResponseEntity<Object> addTransaction(@RequestBody TransactionDetailDto transactionDetail) {
         if(transactionDetail.getTransType()==2){
-            boolean result=transactionService.isCorrect(transactionDetail, (Account) httpServletRequest.getSession().getAttribute("account"));
+            Account account=accountService.find(transactionDetail.getIdAccount());
+            boolean result=transactionService.isCorrect(transactionDetail, account);
             if(result){
-                Account account=(Account)httpServletRequest.getSession().getAttribute("account");
+
                 account.setBalance(account.getBalance()-transactionDetail.getTransMoney());
                 accountService.updateAccount(account);
                 return new ResponseEntity<>(new Object(){
-                    public boolean result_min=transactionService.addTransaction(transactionDetail, account);
+                    public boolean result=transactionService.addTransaction(transactionDetail, account);
                 },HttpStatus.OK);
             }else {
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -66,16 +99,25 @@ public class AccountController {
             if(transactionDetail.getTransMoney()<0){
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }else {
-                Account account=(Account)httpServletRequest.getSession().getAttribute("account");
+                Account account=accountService.find(transactionDetail.getIdAccount());
                 account.setBalance(transactionDetail.getTransMoney()+account.getBalance());
                 accountService.updateAccount(account);
-                return new ResponseEntity<>(new Object(){
-                    public boolean result_add=transactionService.addTransaction(transactionDetail, account);
-                },HttpStatus.OK);
+                return new ResponseEntity<>(new Object() {
+                    public boolean result = transactionService.addTransaction(transactionDetail, account);
+                }, HttpStatus.OK);
+
             }
         }
     }
-
+    @GetMapping("FindByid/{id}")
+    public ResponseEntity<Account> findById(@PathVariable("id") int id) {
+        try {
+            return new ResponseEntity<Account>(accountService.findById(id), HttpStatus.OK);
+        }catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
     @GetMapping("/findByTransType/{value}")
     public ResponseEntity<Object> findByTransType(@PathVariable("value") int transType, HttpServletRequest httpServletRequest) {
         try {

@@ -10,7 +10,17 @@ public class AccountDto implements Serializable {
     private  String name;
     private  String email;
     private  String phone;
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     private  Double balance;
+    private String password;
 
     public AccountDto(String name, String email, String phone, Double balance) {
         this.name = name;

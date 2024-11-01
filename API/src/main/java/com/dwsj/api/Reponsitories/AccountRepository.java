@@ -10,4 +10,5 @@ import org.springframework.web.bind.annotation.PathVariable;
 public interface AccountRepository extends JpaRepository<Account, Integer> {
     @Query("from Account where email=:Email")
     public Account findByEmail(String Email);
+
 }
