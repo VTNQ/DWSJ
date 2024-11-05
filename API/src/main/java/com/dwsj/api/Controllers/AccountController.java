@@ -86,7 +86,6 @@ public class AccountController {
             Account account=accountService.find(transactionDetail.getIdAccount());
             boolean result=transactionService.isCorrect(transactionDetail, account);
             if(result){
-
                 account.setBalance(account.getBalance()-transactionDetail.getTransMoney());
                 accountService.updateAccount(account);
                 return new ResponseEntity<>(new Object(){

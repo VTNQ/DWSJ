@@ -24,7 +24,9 @@ public class TransactionServiceImplement implements TransactionService {
     @Override
     public boolean isCorrect(TransactionDetailDto detail, Account account) {
         try {
-            transactionDetailRepository.findByTransMoney(detail.getTransMoney(),account.getEmail());
+            if(account.getBalance()-detail.getTransMoney()<0){
+                return false;
+            }
             return true;
         }catch (Exception e){
             return false;

@@ -1,8 +1,8 @@
-package com.dwsj.mvc.Controller;
+package com.dwsj.mvc.Controllers;
 
-import com.dwsj.mvc.entities.Account;
-import com.dwsj.mvc.entities.AccountDto;
-import com.dwsj.mvc.services.AccountService;
+import com.dwsj.mvc.Entities.Account;
+import com.dwsj.mvc.Entities.AccountDto;
+import com.dwsj.mvc.Services.AccountService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,11 +13,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller()
-@RequestMapping({"Login"})
+@RequestMapping({"Login","","/"})
 public class LoginController {
     @Autowired
     private AccountService accountService;
-    @GetMapping("/index")
+    @GetMapping({"","/","index"})
     public  String Login(ModelMap modelMap){
         modelMap.put("login",new AccountDto());
         return "Login/index";

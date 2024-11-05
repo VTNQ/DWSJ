@@ -1,7 +1,7 @@
-package com.dwsj.mvc.Controller;
+package com.dwsj.mvc.Controllers;
 
-import com.dwsj.mvc.entities.AccountDto;
-import com.dwsj.mvc.services.AccountService;
+import com.dwsj.mvc.Entities.AccountDto;
+import com.dwsj.mvc.Services.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;

@@ -1,6 +1,6 @@
 package com.dwsj.mvc.APIs;
 
-import com.dwsj.mvc.entities.*;
+import com.dwsj.mvc.Entities.*;
 import org.springframework.boot.autoconfigure.pulsar.PulsarProperties;
 import retrofit2.Call;
 import retrofit2.http.*;

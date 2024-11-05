@@ -1,4 +1,4 @@
-package com.dwsj.mvc.entities;
+package com.dwsj.mvc.Entities;
 
 public class SearchTransferType {
    public int TransferType;

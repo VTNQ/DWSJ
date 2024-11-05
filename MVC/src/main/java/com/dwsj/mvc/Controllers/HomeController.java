@@ -1,17 +1,15 @@
-package com.dwsj.mvc.Controller;
+package com.dwsj.mvc.Controllers;
 
-import com.dwsj.mvc.entities.Account;
-import com.dwsj.mvc.entities.SearchTransferType;
-import com.dwsj.mvc.entities.TransactionDetailDto;
-import com.dwsj.mvc.services.AccountService;
+import com.dwsj.mvc.Entities.Account;
+import com.dwsj.mvc.Entities.SearchTransferType;
+import com.dwsj.mvc.Entities.TransactionDetailDto;
+import com.dwsj.mvc.Services.AccountService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
-
-import java.time.LocalDate;
 
 @Controller()
 @RequestMapping({"","/"})

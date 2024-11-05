@@ -1,8 +1,8 @@
-package com.dwsj.mvc.services;
+package com.dwsj.mvc.Services;
 
 import com.dwsj.mvc.APIs.AccountApi;
 import com.dwsj.mvc.APIs.ApiClient;
-import com.dwsj.mvc.entities.*;
+import com.dwsj.mvc.Entities.*;
 import org.springframework.stereotype.Service;
 import retrofit2.Response;
 

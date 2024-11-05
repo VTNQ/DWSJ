@@ -1,7 +1,7 @@
-package com.dwsj.mvc.services;
+package com.dwsj.mvc.Services;
 
-import com.dwsj.mvc.entities.*;
-import org.springframework.boot.autoconfigure.pulsar.PulsarProperties;
+import com.dwsj.mvc.Entities.*;
+
 
 import java.util.List;
 
